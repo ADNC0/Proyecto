@@ -1,0 +1,26 @@
+databases:
+  - name: servidorAbraham
+    plan: free
+    databaseName: dbproyectos
+    user: Abraham
+
+services:
+  - type: web
+    plan: free
+    name: Proyecto
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn Proyecto.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: servidorAbraham
+          property: externalConnectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: proyecto-e7n8.onrender.com
+
+
+
+# set DATABASE_URL=postgresql://david:RkBAp8ZZaE98t5OiwtpfNnJmI0URw2K9@dpg-cqjettqj1k6c739rc1e0-a.oregon-postgres.render.com/dbcine
