@@ -1,0 +1,53 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'guardarComentario' %}" method="post" id="frm_nuevo_comentario">
+                {% csrf_token %}
+                
+                
+                <label for="texto">Comentario: <br></label>
+                <input type="text" name="texto" class="form-control" id="texto" placeholder="Ingrese el comentario" required>
+
+                <label for="tarea">Tarea: <br></label>
+                <select name="tarea" class="form-control" id="tarea">
+                    <option value="">Seleccione una tarea</option>
+                    {% for tarea in tareas %}
+                        <option value="{{ tarea.id }}">{{ tarea.titulo }}</option>
+                    {% endfor %}
+                </select>
+            
+                <label for="usuario">Usuario: <br></label>
+                <select name="usuario" class="form-control" id="usuario">
+                    <option value="">Seleccione un usuario</option>
+                    {% for usuario in usuarios %}
+                        <option value="{{ usuario.id }}">{{ usuario.nombre }}</option>
+                    {% endfor %}
+                </select>
+                
+                <br>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'listado_comentarios' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('frm_nuevo_comentario').addEventListener('submit', function(event) {
+        const contenido = document.getElementById('contenido').value;
+        const tarea = document.getElementById('tarea').value;
+        const usuario = document.getElementById('usuario').value;
+        
+        if (contenido.trim() === "" || tarea.trim() === "" || usuario.trim() === "") {
+            alert("Todos los campos son obligatorios.");
+            event.preventDefault();
+        }
+    });
+</script>
+
+{% endblock %}

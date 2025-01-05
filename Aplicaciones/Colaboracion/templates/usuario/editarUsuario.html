@@ -1,0 +1,33 @@
+{% extends "plantilla.html" %}
+{% block body %}
+<h1>EDITAR USUARIO</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'procesoActualizarUsuario' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ usuarioEditar.id }}">
+
+                <label for="nombre"><b>Nombre:</b></label>
+                <input type="text" name="nombre" class="form-control" value="{{ usuarioEditar.nombre }}" id="nombre" placeholder="Ingrese el nombre del usuario">
+
+                <label for="correo"><b>Correo Electrónico:</b></label>
+                <input type="email" name="correo" class="form-control" value="{{ usuarioEditar.correo }}" id="correo" placeholder="Ingrese el correo del usuario">
+
+                <label for="contrasena"><b>Contraseña:</b></label>
+                <input type="password" name="contrasena" class="form-control" value="{{ usuarioEditar.contrasena }}" id="contrasena" placeholder="Ingrese la nueva contraseña">
+
+                <label for="fecha_registro">Fecha de Registro:</label>
+                <input type="datetime-local" name="fecha_registro" class="form-control" id="fecha_registro" value="{{ usuarioEditar.fecha_registro|date:'Y-m-d\\TH:i' }}">
+
+                <br>
+                <button type="submit" class="btn btn-warning">Actualizar</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'listado_usuarios' %}" class="btn btn-secondary">Cancelar</a>
+
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

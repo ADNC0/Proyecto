@@ -1,0 +1,50 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+<h1>EDITAR PROYECTO</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'procesoActualizarProyecto' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ proyectoEditar.id }}">
+                
+                <label for="nombre"><b>Nombre del Proyecto:</b></label>
+                <input type="text" name="nombre" class="form-control" value="{{ proyectoEditar.nombre }}" id="nombre" placeholder="Ingrese el nombre del proyecto">
+                
+                <label for="descripcion"><b>Descripción:</b></label>
+                <textarea name="descripcion" class="form-control" id="descripcion" rows="3" placeholder="Ingrese la descripción del proyecto">{{ proyectoEditar.descripcion }}</textarea>
+                
+                <label for="fecha_inicio"><b>Fecha de Inicio:</b></label>
+                <input type="date" name="fecha_inicio" class="form-control" value="{{ proyectoEditar.fecha_inicio }}" id="fecha_inicio">
+                
+                <label for="fecha_fin"><b>Fecha de Fin:</b></label>
+                <input type="date" name="fecha_fin" class="form-control" value="{{ proyectoEditar.fecha_fin }}" id="fecha_fin">
+                
+                <label for="estado"><b>Estado:</b></label>
+                <select name="estado" class="form-control" id="estado">
+                    <option value="En progreso" {% if proyectoEditar.estado == "En progreso" %}selected{% endif %}>En progreso</option>
+                    <option value="Finalizado" {% if proyectoEditar.estado == "Finalizado" %}selected{% endif %}>Finalizado</option>
+                    <option value="Pendiente" {% if proyectoEditar.estado == "Pendiente" %}selected{% endif %}>Pendiente</option>
+                </select>
+                
+                <label for="usuario"><b>Usuario Responsable:</b></label>
+                <select name="usuario" class="form-control" id="usuario">
+                    {% for usuario in usuarios %}
+                        <option value="{{ usuario.id }}" {% if proyectoEditar.usuario.id == usuario.id %}selected{% endif %}>
+                            {{ usuario.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+
+                <br>
+                <button type="submit" class="btn btn-warning">Actualizar</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'listado_proyectos' %}">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'guardarProyecto' %}" method="post" id="frm_nuevo_proyecto">
+                {% csrf_token %}
+                <label for="nombre">Nombre del proyecto: <br></label>
+                <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Ingrese el nombre del proyecto">
+                <label for="descripcion">Descripción: <br></label>
+                <textarea name="descripcion" id="descripcion" class="form-control" rows="5" placeholder="Ingrese una descripción del proyecto"></textarea>
+                <label for="fecha_inicio">Fecha de inicio: <br></label>
+                <input type="date" name="fecha_inicio" class="form-control" id="fecha_inicio">
+                <label for="fecha_fin">Fecha de fin: <br></label>
+                <input type="date" name="fecha_fin" class="form-control" id="fecha_fin">
+                <label for="estado">Estado: <br></label>
+                <select name="estado" class="form-control" id="estado">
+                    <option value="En progreso">En progreso</option>
+                    <option value="Finalizado">Finalizado</option>
+                    <option value="Suspendido">Suspendido</option>
+                </select>
+                <label for="usuario">Usuario: <br></label>
+                <select name="usuario" class="form-control" id="usuario">
+                    <option value="">Seleccione un usuario</option>
+                    {% for usuario in usuarios %}
+                        <option value="{{ usuario.id }}">{{ usuario.nombre }}</option>  
+                    {% endfor %}
+                </select>
+                <br>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'listado_proyectos' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('frm_nuevo_proyecto').addEventListener('submit', function(event) {
+        const nombre = document.getElementById('nombre').value;
+        const descripcion = document.getElementById('descripcion').value;
+        const fechaInicio = document.getElementById('fecha_inicio').value;
+        const fechaFin = document.getElementById('fecha_fin').value;
+        if (nombre.trim() === "" || descripcion.trim() === "" || fechaInicio.trim() === "" || fechaFin.trim() === "") {
+            alert("Todos los campos son obligatorios.");
+            event.preventDefault();
+        }
+    });
+</script>
+
+{% endblock %}

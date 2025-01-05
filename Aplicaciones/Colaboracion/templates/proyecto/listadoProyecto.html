@@ -1,0 +1,80 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+<br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Listado Proyectos</b></h3>
+    </div>
+</div>
+<br>
+<div style="text-align: center;">
+    <a href="{% url 'nuevaProyecto' %}" class="btn btn-success">Agregar Proyecto</a>
+</div>
+
+<!-- Tabla de proyectos -->
+<table class="table table-bordered table-striped table-hover text-center" id="tbl-proyectos">
+    <thead>
+        <tr>
+            <th style="color: green;">ID</th>
+            <th style="color: green;">Nombre</th>
+            <th style="color: blue;">Descripción</th>
+            <th style="color: red;">Fecha de inicio</th>
+            <th style="color: red;">Fecha de fin</th>
+            <th style="color: green;">Estado</th>
+            <th style="color: green;">Usuario</th>
+            <th style="color: green;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for proyecto in proyectos %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ proyecto.nombre }}</td>
+            <td>{{ proyecto.descripcion }}</td>
+            <td>{{ proyecto.fecha_inicio }}</td>
+            <td>{{ proyecto.fecha_fin }}</td>
+            <td>{{ proyecto.estado }}</td>
+            <td>{{ proyecto.usuario.nombre }}</td>
+            <td>
+                <a href="{% url 'editarProyecto' proyecto.id %}" class="btn btn-warning">Editar</a>
+                <a href="{% url 'eliminarProyecto' proyecto.id %}" onclick="return confirm('¿Estás seguro de eliminar?')" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr style="border: none; height: 20px; background: linear-gradient(to right, green, purple, lightgreen, orange, skyblue, pink, brown, yellow);">
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Proyectos Pendientes</h4>
+            <div class="progress">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ porcentaje_pendientes|floatformat:2 }}%" aria-valuenow="{{ proyectos_pendientes }}" aria-valuemin="0" aria-valuemax="{{ total_proyectos }}"></div>
+            </div>
+            <p>{{ proyectos_pendientes }} / {{ total_proyectos }} proyectos pendientes</p>
+        </div>
+        <div class="col-md-4">
+            <h4>Proyectos en Progreso</h4>
+            <div class="progress">
+                <div class="progress-bar bg-info" role="progressbar" style="width: {{ porcentaje_en_progreso|floatformat:2 }}%" aria-valuenow="{{ proyectos_en_progreso }}" aria-valuemin="0" aria-valuemax="{{ total_proyectos }}"></div>
+            </div>
+            <p>{{ proyectos_en_progreso }} / {{ total_proyectos }} proyectos en progreso</p>
+        </div>
+        <div class="col-md-4">
+            <h4>Proyectos Finalizados</h4>
+            <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ porcentaje_finalizados|floatformat:2 }}%" aria-valuenow="{{ proyectos_finalizados }}" aria-valuemin="0" aria-valuemax="{{ total_proyectos }}"></div>
+            </div>
+            <p>{{ proyectos_finalizados }} / {{ total_proyectos }} proyectos finalizados</p>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#tbl-proyectos').DataTable();
+    });
+</script>
+
+{% endblock %}

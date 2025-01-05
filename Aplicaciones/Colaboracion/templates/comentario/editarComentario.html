@@ -1,0 +1,42 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+<h1>EDITAR COMENTARIO</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'procesoActualizarComentario' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ comentarioEditar.id }}">
+
+                <label for="texto"><b>Comentario:</b></label>
+                <textarea name="texto" class="form-control" id="texto" rows="5" placeholder="Ingrese el texto del comentario">{{ comentarioEditar.texto }}</textarea>
+
+                <label for="tarea"><b>Tarea Asociada:</b></label>
+                <select name="tarea" class="form-control" id="tarea">
+                    {% for tarea in tareas %}
+                        <option value="{{ tarea.id }}" {% if comentarioEditar.tarea.id == tarea.id %}selected{% endif %}>
+                            {{ tarea.titulo }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label for="usuario"><b>Usuario Responsable:</b></label>
+                <select name="usuario" class="form-control" id="usuario">
+                    {% for usuario in usuarios %}
+                        <option value="{{ usuario.id }}" {% if comentarioEditar.usuario.id == usuario.id %}selected{% endif %}>
+                            {{ usuario.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <br>
+                <button type="submit" class="btn btn-warning">Actualizar</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'listado_comentarios' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

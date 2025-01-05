@@ -1,0 +1,92 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+<br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Listado Tareas</b></h3>
+    </div>
+</div>
+<br>
+<div style="text-align: center;">
+    <a href="{% url 'nuevaTarea' %}" class="btn btn-success">Agregar Tarea</a>
+</div>
+
+<!-- Tabla de tareas -->
+<table class="table table-bordered table-striped table-hover text-center" id="tbl-tareas">
+    <thead>
+        <tr>
+            <th style="color: green;">ID</th>
+            <th style="color: green;">Título</th>
+            <th style="color: blue;">Descripción</th>
+            <th style="color: red;">Fecha límite</th>
+            <th style="color: red;">Estado</th>
+            <th style="color: green;">Proyecto</th>
+            <th style="color: green;">Usuario</th>
+            <th style="color: green;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ tarea.titulo }}</td>
+            <td>{{ tarea.descripcion }}</td>
+            <td>{{ tarea.fecha_limite }}</td>
+            <td>{{ tarea.estado }}</td>
+            <td>{{ tarea.proyecto.nombre }}</td>
+            <td>{{ tarea.usuario.nombre }}</td>
+            <td>
+                <a href="{% url 'editarTarea' tarea.id %}" class="btn btn-warning">Editar</a>
+                <a href="{% url 'eliminarTarea' tarea.id %}" onclick="return confirm('¿Estás seguro de eliminar?')" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr style="border: none; height: 20px; background: linear-gradient(to right, green, purple, lightgreen, orange, skyblue, pink, brown, yellow);">
+
+<!-- Barras de progreso -->
+<div class="container mt-4">
+    <h4 class="text-center">Progreso de Tareas</h4>
+    <div class="progress mb-2">
+        <div 
+            class="progress-bar bg-danger" 
+            role="progressbar" 
+            style="width: {{ porcentaje_pendiente }}%;" 
+            aria-valuenow="{{ porcentaje_pendiente }}" 
+            aria-valuemin="0" 
+            aria-valuemax="100">
+            Pendiente: {{ porcentaje_pendiente|floatformat:2 }}%
+        </div>
+    </div>
+    <div class="progress mb-2">
+        <div 
+            class="progress-bar bg-warning" 
+            role="progressbar" 
+            style="width: {{ porcentaje_en_progreso }}%;" 
+            aria-valuenow="{{ porcentaje_en_progreso }}" 
+            aria-valuemin="0" 
+            aria-valuemax="100">
+            En progreso: {{ porcentaje_en_progreso|floatformat:2 }}%
+        </div>
+    </div>
+    <div class="progress mb-2">
+        <div 
+            class="progress-bar bg-success" 
+            role="progressbar" 
+            style="width: {{ porcentaje_finalizado }}%;" 
+            aria-valuenow="{{ porcentaje_finalizado }}" 
+            aria-valuemin="0" 
+            aria-valuemax="100">
+            Finalizado: {{ porcentaje_finalizado|floatformat:2 }}%
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#tbl-tareas').DataTable();
+    });
+</script>
+{% endblock %}

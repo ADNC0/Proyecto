@@ -1,0 +1,51 @@
+{% extends "plantilla.html" %}
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'guardarUsuario' %}" method="post" id="frm_nuevo_usuario">
+                {% csrf_token %}
+                
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Ingrese el nombre del usuario" required>
+                
+                <label for="correo">Correo Electrónico:</label>
+                <input type="email" name="correo" class="form-control" id="correo" placeholder="Ingrese el correo electrónico del usuario" required>
+                
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" name="contrasena" class="form-control" id="contrasena" placeholder="Ingrese la contraseña" required>
+
+                <label for="fecha_registro">Fecha de Registro:</label>
+                <input type="date" name="fecha_registro" class="form-control" id="fecha_registro" required>
+
+                <br>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'listado_usuarios' %}" class="btn btn-secondary">Cancelar</a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Selecciona el formulario con el ID 'frm_nuevo_usuario' y agrega un evento al momento de enviarlo.
+    document.getElementById('frm_nuevo_usuario').addEventListener('submit', function(event) {
+        // Obtiene el valor del campo de entrada con el ID 'nombre'.
+        const nombre = document.getElementById('nombre').value;     
+        // Obtiene el valor del campo de entrada con el ID 'correo'.
+        const correo = document.getElementById('correo').value;     
+        // Obtiene el valor del campo de entrada con el ID 'contrasena'.
+        const contrasena = document.getElementById('contrasena').value;
+        // Verifica si alguno de los campos está vacío después de eliminar los espacios en blanco al inicio y al final.
+        if (nombre.trim() === "" || correo.trim() === "" || contrasena.trim() === "") {
+            // Si algún campo está vacío, muestra un mensaje de alerta.
+            alert("Todos los campos son obligatorios.");         
+            // Previene que el formulario se envíe si no se cumplen las validaciones.
+            event.preventDefault();
+        }
+    });
+</script>
+
+
+{% endblock %}

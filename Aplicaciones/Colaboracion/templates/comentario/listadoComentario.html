@@ -1,0 +1,44 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+<br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Listado Comentarios</b></h3>
+    </div>
+</div>
+<br>
+<div style="text-align: center;">
+    <a href="{% url 'nuevaComentario' %}" class="btn btn-success">Agregar Comentario</a>
+</div>
+
+<table class="table table-bordered table-striped table-hover text-center" id="tbl-comentarios">
+    <thead>
+        <tr>
+            <th style="color: green;">ID</th>
+            <th style="color: green;">Comentario</th>
+            <th style="color: blue;">Tarea</th>
+            <th style="color: blue;">Usuario</th>
+            <th style="color: red;">Fecha</th>
+            <th style="color: green;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for comentario in comentarios %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ comentario.texto }}</td>
+            <td>{{ comentario.tarea.titulo }}</td>
+            <td>{{ comentario.usuario.nombre }}</td>
+            <td>{{ comentario.fecha_comentario }}</td>
+            <td>
+                <a href="{% url 'editarComentario' comentario.id %}" class="btn btn-warning">Editar</a>
+                <a href="{% url 'eliminarComentario' comentario.id %}" onclick="return confirm('¿Estás seguro de eliminar?')" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

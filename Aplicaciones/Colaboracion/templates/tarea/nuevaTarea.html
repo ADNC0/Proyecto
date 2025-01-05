@@ -1,0 +1,68 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'guardarTarea' %}" method="post" id="frm_nueva_tarea">
+                {% csrf_token %}
+                
+                <label for="titulo">Título de la tarea: <br></label>
+                <input type="text" name="titulo" class="form-control" id="titulo" placeholder="Ingrese el título de la tarea">
+                
+                <label for="descripcion">Descripción: <br></label>
+                <textarea name="descripcion" id="descripcion" class="form-control" rows="5" placeholder="Ingrese una descripción de la tarea"></textarea>
+                
+                <label for="fecha_limite">Fecha límite: <br></label>
+                <input type="date" name="fecha_limite" class="form-control" id="fecha_limite">
+                
+                <label for="estado">Estado: <br></label>
+                <select name="estado" class="form-control" id="estado">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En progreso">En progreso</option>
+                    <option value="Finalizado">Finalizado</option>
+                </select>
+                
+                <label for="proyecto">Proyecto: <br></label>
+                <select name="proyecto" class="form-control" id="proyecto">
+                    <option value="">Seleccione un proyecto</option>
+                    {% for proyecto in proyectos %}
+                        <option value="{{ proyecto.id }}">{{ proyecto.nombre }}</option>  
+                    {% endfor %}
+                </select>
+                
+                <label for="usuario">Usuario: <br></label>
+                <select name="usuario" class="form-control" id="usuario">
+                    <option value="">Seleccione un usuario</option>
+                    {% for usuario in usuarios %}
+                        <option value="{{ usuario.id }}">{{ usuario.nombre }}</option>  
+                    {% endfor %}
+                </select>
+                
+                <br>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'listado_tareas' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('frm_nueva_tarea').addEventListener('submit', function(event) {
+        const titulo = document.getElementById('titulo').value;
+        const descripcion = document.getElementById('descripcion').value;
+        const fechaLimite = document.getElementById('fecha_limite').value;
+        const estado = document.getElementById('estado').value;
+        const proyecto = document.getElementById('proyecto').value;
+        const usuario = document.getElementById('usuario').value;
+        
+        if (titulo.trim() === "" || descripcion.trim() === "" || fechaLimite.trim() === "" || estado.trim() === "" || proyecto.trim() === "" || usuario.trim() === "") {
+            alert("Todos los campos son obligatorios.");
+            event.preventDefault();
+        }
+    });
+</script>
+
+{% endblock %}
